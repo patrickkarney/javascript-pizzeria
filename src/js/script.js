@@ -58,7 +58,21 @@
       thisProduct.id = id;
       thisProduct.data = data;
 
+      thisProduct.renderInMenu;
       console.log('new product: ', thisProduct);
+    }
+
+    renderInMenu(){
+      const thisProduct = this;
+
+      /*generate HTML based on template */
+      const generateHTML = templates.menuProduct(thisProduct.data);
+      /*create element using utils.createElementFromHTML */
+      thisProduct.element = utils.createDOMFromHTML(generatedHTML);
+      /*find menu container */
+      const menuContainer = document.querySelector(select.containerOf.menu);
+      /*add element to menu */
+      menuContainer = appendChild(thisProduct.element);
     }
   }
 
