@@ -58,21 +58,22 @@
       thisProduct.id = id;
       thisProduct.data = data;
 
-      thisProduct.renderInMenu;
+      thisProduct.renderInMenu();
       console.log('new product: ', thisProduct);
     }
 
     renderInMenu(){
       const thisProduct = this;
-
+      
       /*generate HTML based on template */
       const generateHTML = templates.menuProduct(thisProduct.data);
       /*create element using utils.createElementFromHTML */
-      thisProduct.element = utils.createDOMFromHTML(generatedHTML);
+      thisProduct.element = utils.createDOMFromHTML(generateHTML);
       /*find menu container */
       const menuContainer = document.querySelector(select.containerOf.menu);
+      //console.log('menuContainer: ', menuContainer);
       /*add element to menu */
-      menuContainer = appendChild(thisProduct.element);
+      menuContainer.appendChild(thisProduct.element);
     }
   }
 
