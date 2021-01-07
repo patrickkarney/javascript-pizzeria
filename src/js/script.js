@@ -61,7 +61,7 @@
       thisProduct.renderInMenu();
       thisProduct.initAccordion();
       console.log('new product: ', thisProduct);
-    };
+    }
 
     renderInMenu(){
       const thisProduct = this;
@@ -75,35 +75,31 @@
       //console.log('menuContainer: ', menuContainer);
       /*add element to menu */
       menuContainer.appendChild(thisProduct.element);
-    };
+    }
 
     initAccordion(){
       const thisProduct = this;
       console.log('ThisProduct: ',thisProduct);
       /* find the clickable trigger (the element that should react to clicking) */
-      const clickableTrigger = document.querySelector(select.menuProduct.clickable);
+      const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
       console.log('clickableTrigger: ',clickableTrigger);
 
       /* START: add event listener to clickable trigger on event click */
       clickableTrigger.addEventListener('click', function(event) {
-      /* prevent default action for event */
-      event.preventDefault();
-      /* find active product (product that has active class) */
-      const acitveProduct = document.querySelector(select.all.menuProductsActive);
-      console.log('aktywny produkt: ', acitveProduct);
-      /* if there is active product and it's not thisProduct.element, remove class active from it */
-      if(acitveProduct != null && acitveProduct != thisProduct.element){
-        acitveProduct.classList.remove('active');
-      }
-      /* toggle active class on thisProduct.element */
-      thisProduct.element.classList.add('active');
-      console.log('aktywny produkt: ', acitveProduct);
-      console.log('thisProduct element: ', thisProduct.element);
+        /* prevent default action for event */
+        event.preventDefault();
+        /* find active product (product that has active class) */
+        const activeProduct = document.querySelector(select.all.menuProductsActive);
+        console.log('aktywny produkt przed click: ', activeProduct);
+        /* if there is active product and it's not thisProduct.element, remove class active from it */
+        if(activeProduct != null && activeProduct != thisProduct.element){
+          activeProduct.classList.remove('active');
+        }
+        /* toggle active class on thisProduct.element */
+        thisProduct.element.classList.add('active');
+        console.log('thisProduct element: ', thisProduct.element);
       });
     }
-    
-
-
   }
 
   const app = {
