@@ -171,16 +171,14 @@
             } else if(!option.default){
               price = price + optionPrice;
               console.log('Price added: ', price);
-              
-            
-            } else {                                                      // box unchecked
-              if(option.default){
-                price = price - optionPrice;
-                console.log('Price subtracted: ', price);
-              } 
-              
+              console.log('do nothing');  
             }
+            
+          } else if(option.default){
+            price = price - optionPrice;
+            console.log('Price subtracted: ', price);
           }
+          
           // if optionImage is not null
           if(optionImage){
             optionImage.classList.add(classNames.menuProduct.imageVisible);
@@ -202,17 +200,17 @@
     initAmountWidget(){
       const thisProduct = this;
 
-      thisProduct.amountWidgetElem = new AmountWidget(thisProduct.amountWidgetElem);
+      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
     }
   }
 
   // eslint-disable-next-line no-unused-vars
   class AmountWidget{
-    connstructor(element){
+    constructor(element){
       // eslint-disable-next-line no-unused-vars
       const thisWidget = this;
 
-      console.log('AmountWidget: ', AmountWidget);
+      console.log('AmountWidget: ', thisWidget);
       console.log('constructor elements: ', element);
     }
     
