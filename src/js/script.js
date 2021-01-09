@@ -171,7 +171,7 @@
             } else if(!option.default){
               price = price + optionPrice;
               console.log('Price added: ', price);
-              console.log('do nothing');  
+               
             }
             
           } else if(option.default){
@@ -210,8 +210,34 @@
       // eslint-disable-next-line no-unused-vars
       const thisWidget = this;
 
+      thisWidget.getElements(element);
+      thisWidget.setValue(thisWidget.input.value);
       console.log('AmountWidget: ', thisWidget);
       console.log('constructor elements: ', element);
+    }
+
+    getElements(element){
+      const thisWidget = this;
+    
+      thisWidget.element = element;
+      thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
+      thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
+      thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
+    }
+
+    setValue(value){
+      const thisWidget = this;
+
+      const newValue = parseInt(value);
+
+      //Add validation
+      //check if newValue is different than current value
+      if(newValue !== thisWidget.value && !isNaN(newValue)){
+        thisWidget.value = newValue;
+        
+      } else {console.log('Nie jestem liczbą');
+      }
+      thisWidget.input.value = thisWidget.value;
     }
     
   }
