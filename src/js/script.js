@@ -43,8 +43,8 @@
   const settings = {
     amountWidget: {
       defaultValue: 1,
-      defaultMin: 1,
-      defaultMax: 9,
+      defaultMin: 0,
+      defaultMax: 10,
     }
   };
 
@@ -192,7 +192,8 @@
           }
         }
       }
-
+      //multiply price by amount
+      price *= thisProduct.amountWidget.value;
       // update calculated price in the HTML
       thisProduct.priceElem.innerHTML = price;
     }
@@ -201,6 +202,9 @@
       const thisProduct = this;
 
       thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+      thisProduct.amountWidgetElem.addEventListener('update', function(event){
+        thisProduct.processOrder();
+      });
     }
   }
 
@@ -228,13 +232,15 @@
 
     setValue(value){
       const thisWidget = this;
+      thisWidget.value = settings.amountWidget.defaultValue;
 
       const newValue = parseInt(value);
-
+      
       //Add validation
       //check if newValue is different than current value
-      if(newValue !== thisWidget.value && !isNaN(newValue)){
+      if(newValue !== thisWidget.value && !isNaN(newValue) && newValue<=settings.amountWidget.defaultMax && newValue>=settings.amountWidget.defaultMin){
         thisWidget.value = newValue;
+        thisWidget.announce();
         
       } else {console.log('Nie jestem liczbą');
       }
@@ -244,6 +250,7 @@
     initActions(){
       const thisWidget = this;
 
+      // eslint-disable-next-line no-unused-vars
       thisWidget.input.addEventListener('change', function(event){
         thisWidget.setValue(thisWidget.input.value);
       });
@@ -255,6 +262,13 @@
         event.preventDefault();
         thisWidget.setValue(thisWidget.value+1);
       });
+    }
+
+    announce(){
+      const thisWidget = this;
+
+      const event = new Event('update');
+      thisWidget.element.dispatchEvent(event);
     }
     
   }
