@@ -337,7 +337,7 @@
 
       // eslint-disable-next-line no-unused-vars
       thisCart.dom.toggleTrigger.addEventListener('click', function(event){
-        thisCart.dom.wrapper.toggle(classNames.cart.wrapperActive);
+        thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
       });
     }
 
