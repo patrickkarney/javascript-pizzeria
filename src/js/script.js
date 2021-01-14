@@ -393,6 +393,7 @@
       thisCart.dom = {};
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.containerOf.menu);
       console.log('wrapper: ', thisCart.dom.wrapper);
       console.log('toggleTrigger: ', thisCart.dom.toggleTrigger);
 
@@ -408,9 +409,15 @@
     }
 
     add(menuProduct){
-      //const thisCart = this;
-
-      console.log('adding product: ', menuProduct);
+      const thisCart = this;
+      /*generate HTML based on template */
+      const generateHTML = templates.cartProduct(menuProduct);
+      /*create element using utils.createElementFromHTML */
+      const generatedHTML = utils.createDOMFromHTML(generateHTML);
+      /*add element to menu */
+      thisCart.dom.productList.appendChild(generatedHTML);
+      console.log('Cart: ',thisCart);
+      console.log('adding cart: ', menuProduct);
     }
 
   }
