@@ -113,6 +113,7 @@
       //console.log('menuContainer: ', menuContainer);
       /*add element to menu */
       menuContainer.appendChild(thisProduct.element);
+      console.log('thisProduct: ',thisProduct);
     }
 
     getElements(){
@@ -168,6 +169,7 @@
       thisProduct.cartButton.addEventListener('click', function(event){
         event.preventDefault();
         thisProduct.processOrder();
+        thisProduct.addToCart();
       });
     }
 
@@ -229,6 +231,8 @@
       }
       //multiply price by amount
       price *= thisProduct.amountWidget.value;
+      //create new property thisProduct.priceSingle in order to for cart to know what is the price of a single item with chosen checkboxes
+      thisProduct.priceSingle = price;
       // update calculated price in the HTML
       thisProduct.priceElem.innerHTML = price;
     }
@@ -241,6 +245,29 @@
       thisProduct.amountWidgetElem.addEventListener('update', function(event){
         thisProduct.processOrder();
       });
+    }
+
+    addToCart(){
+      const thisProduct = this;
+
+      app.cart.add(thisProduct.prepareCartProduct());
+      
+    }
+
+    prepareCartProduct(){
+      const thisProduct = this;
+
+      const productSummary = {};
+      productSummary.id = thisProduct.id;
+      productSummary.name = thisProduct.data.name;
+      productSummary.amount = thisProduct.amountWidget.value; 
+      productSummary.priceSingle = thisProduct.priceSingle;
+      productSummary.price = productSummary.amount * productSummary.priceSingle;
+      
+      // eslint-disable-next-line no-unused-vars
+      const params = {};
+      console.log('productSummary: ', productSummary);
+      return productSummary;
     }
   }
 
@@ -338,7 +365,13 @@
       // eslint-disable-next-line no-unused-vars
       thisCart.dom.toggleTrigger.addEventListener('click', function(event){
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
-      });
+      });      
+    }
+
+    add(menuProduct){
+      //const thisCart = this;
+
+      console.log('adding product: ', menuProduct);
     }
 
   }
