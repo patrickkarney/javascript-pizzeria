@@ -260,17 +260,56 @@
       const productSummary = {};
       productSummary.id = thisProduct.id;
       productSummary.name = thisProduct.data.name;
+      productSummary.params = thisProduct.prepareCartProductParams();
       productSummary.amount = thisProduct.amountWidget.value; 
       productSummary.priceSingle = thisProduct.priceSingle;
       productSummary.price = productSummary.amount * productSummary.priceSingle;
       
-      // eslint-disable-next-line no-unused-vars
-      const params = {};
+      
       console.log('productSummary: ', productSummary);
+      console.log('cart params: ',thisProduct.prepareCartProductParams());
       return productSummary;
     }
-  }
 
+    prepareCartProductParams(){
+      const thisProduct = this;
+      // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
+      const formData = utils.serializeFormToObject(thisProduct.form);
+
+      //create object that holds new params
+      const params = {};
+      
+      // for every category (param)...
+      for(let paramId in thisProduct.data.params) {
+        // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
+        const param = thisProduct.data.params[paramId];
+        params[paramId] = {
+          name: param.label,
+          options: {}
+        };
+
+        // for every option in this category
+        for(let optionId in param.options) {
+          // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
+          // eslint-disable-next-line no-unused-vars
+          const option = param.options[optionId];          
+                    
+          // create const holding condition for checked box
+          const checkedBoxCondition = formData[paramId] && formData[paramId].includes(optionId);        
+          
+          // check if there is param with a name of paramId in formData and if it includes optionId
+
+          if(checkedBoxCondition){                                        
+            params[paramId].options[optionId] = {
+              label: option.label
+            };               
+          }
+        }        
+      }
+      return params;
+    }
+  }
+  
   // eslint-disable-next-line no-unused-vars
   class AmountWidget{
     constructor(element){
