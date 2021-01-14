@@ -393,7 +393,7 @@
       thisCart.dom = {};
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
-      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.containerOf.menu);
+      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
       console.log('wrapper: ', thisCart.dom.wrapper);
       console.log('toggleTrigger: ', thisCart.dom.toggleTrigger);
 
