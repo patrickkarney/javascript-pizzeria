@@ -394,8 +394,8 @@
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
       thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
-      console.log('wrapper: ', thisCart.dom.wrapper);
-      console.log('toggleTrigger: ', thisCart.dom.toggleTrigger);
+      //console.log('wrapper: ', thisCart.dom.wrapper);
+      //console.log('toggleTrigger: ', thisCart.dom.toggleTrigger);
 
     }
 
@@ -416,9 +416,42 @@
       const generatedHTML = utils.createDOMFromHTML(generateHTML);
       /*add element to menu */
       thisCart.dom.productList.appendChild(generatedHTML);
+      //save selected product to the table thisCart.products
+      thisCart.products.push( new CartProduct(menuProduct, generatedHTML));
+      console.log('Saved products thisCart.products: ', thisCart.products);
       console.log('Cart: ',thisCart);
       console.log('adding cart: ', menuProduct);
     }
+
+  }
+
+  class CartProduct{
+    constructor(menuProduct, element){
+      const thisCartProduct = this;
+      //add referance to all the properties of the product saved in the cart (menuProduct)
+      thisCartProduct.id = menuProduct.id;
+      thisCartProduct.name = menuProduct.name;
+      thisCartProduct.amount = menuProduct.amount;
+      thisCartProduct.price = menuProduct.price;
+      thisCartProduct.priceSingle = menuProduct.priceSingle;
+      thisCartProduct.params = menuProduct.params;
+
+      thisCartProduct.getElements(element);
+      console.log('cartProduct: ', CartProduct);
+    }
+
+    getElements(element){
+      const thisCartProduct = this;
+      thisCartProduct.dom = {};
+      thisCartProduct.dom.wrapper = element;
+      thisCartProduct.dom.amountWidget = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.amountWidget);
+      thisCartProduct.dom.price = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.price);
+      thisCartProduct.dom.remove = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.remove);
+      thisCartProduct.dom.edit = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.edit);
+
+
+    }
+
 
   }
 
@@ -451,6 +484,7 @@
       thisApp.initData();
       thisApp.initMenu();
       thisApp.initCart();
+      
     },
 
     initCart: function(){
@@ -459,6 +493,7 @@
       const cartElem = document.querySelector(select.containerOf.cart);
       thisApp.cart = new Cart(cartElem);
     }
+
   };
 
   app.init();
