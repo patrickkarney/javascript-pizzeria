@@ -235,6 +235,8 @@
       
       //multiply price by amount
       price *= thisProduct.amountWidget.value;
+      //create new property thisProduct.priceSingle in order to for cart to know what is the price of a single item with chosen checkboxes
+      thisProduct.priceSingle = price;
       
       // update calculated price in the HTML
       thisProduct.priceElem.innerHTML = price;
@@ -473,6 +475,7 @@
 
       thisCartProduct.getElements(element);
       thisCartProduct.initAmountWidget();
+      thisCartProduct.initActions();
       
     }
 
@@ -501,9 +504,34 @@
 
         thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
         console.log('zaktualizowany koszyk: ', thisCartProduct);
+      });    
+    }
+
+    remove(){
+      const thisCartProduct = this;
+
+      const event = new CustomEvent('remove', {
+        bubbles: true,
+        detail: {
+          cartProduct: thisCartProduct,
+        },
       });
-      
-    
+
+      thisCartProduct.dom.wrapper.dispatchEvent(event);
+      console.log('działam test');
+    }
+
+    initActions(){
+      const thisCartProduct = this;
+
+      thisCartProduct.dom.edit.addEventListener('click', function(event){
+        event.preventDefault();
+      });
+      thisCartProduct.dom.remove.addEventListener('click', function(event){
+        event.preventDefault();
+        thisCartProduct.remove();
+      });
+
     }
 
 
