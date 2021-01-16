@@ -180,6 +180,8 @@
 
       // set price to default price
       let price = thisProduct.data.price;
+      //create new property thisProduct.priceSingle in order to for cart to know what is the price of a single item with chosen checkboxes
+      thisProduct.priceSingle = price;
       
       // for every category (param)...
       for(let paramId in thisProduct.data.params) {
@@ -229,10 +231,10 @@
           }
         }
       }
+      
       //multiply price by amount
       price *= thisProduct.amountWidget.value;
-      //create new property thisProduct.priceSingle in order to for cart to know what is the price of a single item with chosen checkboxes
-      thisProduct.priceSingle = price;
+      
       // update calculated price in the HTML
       thisProduct.priceElem.innerHTML = price;
     }
@@ -418,9 +420,7 @@
       thisCart.dom.productList.appendChild(generatedHTML);
       //save selected product to the table thisCart.products
       thisCart.products.push( new CartProduct(menuProduct, generatedHTML));
-      console.log('Saved products thisCart.products: ', thisCart.products);
-      console.log('Cart: ',thisCart);
-      console.log('adding cart: ', menuProduct);
+      
     }
 
   }
@@ -457,7 +457,7 @@
 
       thisCartProduct.amountWidget = new AmountWidget(thisCartProduct.dom.amountWidget);
       // eslint-disable-next-line no-unused-vars
-      thisCartProduct.dom.amountWidget.addEventListener('update', function(event){
+      thisCartProduct.dom.amountWidget.addEventListener('update', function(){
         // bug for amount = 1
         thisCartProduct.amount = thisCartProduct.amountWidget.value;
         console.log('wartość amountWidget.value: ',thisCartProduct.amountWidget.value);
