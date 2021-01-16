@@ -38,6 +38,7 @@
       toggleTrigger: '.cart__summary',
       totalNumber: `.cart__total-number`,
       totalPrice: '.cart__total-price strong, .cart__order-total .cart__order-price-sum strong',
+      totalPriceSum: '.cart__order-price-sum strong',
       subtotalPrice: '.cart__order-subtotal .cart__order-price-sum strong',
       deliveryFee: '.cart__order-delivery .cart__order-price-sum strong',
       form: '.cart__order',
@@ -342,7 +343,7 @@
       
       //Add validation
       //check if newValue is different than current value
-      if(newValue !== thisWidget.value && !isNaN(newValue) && newValue<=settings.amountWidget.defaultMax && newValue>=settings.amountWidget.defaultMin-1){
+      if(newValue !== thisWidget.value && !isNaN(newValue) && newValue<=settings.amountWidget.defaultMax && newValue>=settings.amountWidget.defaultMin){
         thisWidget.value = newValue;
         thisWidget.announce();
       }
@@ -369,7 +370,9 @@
     announce(){
       const thisWidget = this;
 
-      const event = new Event('update');
+      const event = new CustomEvent('update', {
+        bubbles: true
+      });
       thisWidget.element.dispatchEvent(event);
     }
     
@@ -397,6 +400,7 @@
       thisCart.dom.subtotalPrice = thisCart.dom.wrapper.querySelector(select.cart.subtotalPrice);
       thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelector(select.cart.totalPrice);
       thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
+      thisCart.dom.totalPriceSum = thisCart.dom.wrapper.querySelector(select.cart.totalPriceSum);
       //console.log('wrapper: ', thisCart.dom.wrapper);
       //console.log('toggleTrigger: ', thisCart.dom.toggleTrigger);
 
@@ -408,7 +412,11 @@
       // eslint-disable-next-line no-unused-vars
       thisCart.dom.toggleTrigger.addEventListener('click', function(event){
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
-      });      
+      });
+      
+      thisCart.dom.productList.addEventListener('update', function(){
+        thisCart.update();
+      });
     }
 
     add(menuProduct){
@@ -440,13 +448,14 @@
       }
       
       if(subtotalPrice != 0){
+        console.log('test warunku!');
         thisCart.totalPrice = subtotalPrice + deliveryFee;
       }
       console.log('Dane zamówienia: ', thisCart.totalPrice, totalNumber, subtotalPrice);
       thisCart.dom.deliveryFee.innerHTML = deliveryFee;
       thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
       thisCart.dom.totalPrice.innerHTML = thisCart.totalPrice;
-
+      thisCart.dom.totalNumber.innerHTML = totalNumber;
     }
 
   }
