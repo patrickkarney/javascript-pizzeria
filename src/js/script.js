@@ -322,6 +322,7 @@
       const thisWidget = this;
 
       thisWidget.getElements(element);
+      thisWidget.value = settings.amountWidget.defaultValue;
       thisWidget.setValue(thisWidget.input.value);
       thisWidget.initActions();
       //console.log('AmountWidget: ', thisWidget);
@@ -338,9 +339,7 @@
     }
 
     setValue(value){
-      const thisWidget = this;
-      thisWidget.value = settings.amountWidget.defaultValue;
-
+      const thisWidget = this;      
       const newValue = parseInt(value);
       
       //Add validation
@@ -350,22 +349,25 @@
         thisWidget.announce();
       }
       thisWidget.input.value = thisWidget.value;
+      
     }
 
     initActions(){
       const thisWidget = this;
 
       // eslint-disable-next-line no-unused-vars
-      thisWidget.input.addEventListener('change', function(event){
+      thisWidget.input.addEventListener('change', function(){
         thisWidget.setValue(thisWidget.input.value);
       });
       thisWidget.linkDecrease.addEventListener('click', function(event){
         event.preventDefault();
         thisWidget.setValue(thisWidget.value-1);
+        console.log('thisWidget.value', thisWidget.value);
       });
       thisWidget.linkIncrease.addEventListener('click', function(event){
         event.preventDefault();
         thisWidget.setValue(thisWidget.value+1);
+        console.log('thisWidget.value', thisWidget.value);
       });
     }
 
@@ -400,7 +402,7 @@
       thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
       thisCart.dom.deliveryFee = thisCart.dom.wrapper.querySelector(select.cart.deliveryFee);
       thisCart.dom.subtotalPrice = thisCart.dom.wrapper.querySelector(select.cart.subtotalPrice);
-      thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelector(select.cart.totalPrice);
+      thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelectorAll(select.cart.totalPrice);
       thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
       thisCart.dom.totalPriceSum = thisCart.dom.wrapper.querySelector(select.cart.totalPriceSum);
       //console.log('wrapper: ', thisCart.dom.wrapper);
@@ -419,6 +421,10 @@
       thisCart.dom.productList.addEventListener('update', function(){
         thisCart.update();
       });
+      thisCart.dom.productList.addEventListener('remove', function(event){
+        thisCart.remove(event.detail.cartProduct);
+      });
+
     }
 
     add(menuProduct){
@@ -439,7 +445,7 @@
     update(){
       const thisCart = this;
 
-      const deliveryFee = settings.cart.defaultDeliveryFee;
+      thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
       
       let totalNumber = 0;
       let subtotalPrice = 0;
@@ -447,17 +453,32 @@
       for(let product of thisCart.products){
         totalNumber = totalNumber + product.amount;
         subtotalPrice = subtotalPrice + product.price;
-      }
+      }      
       
-      if(subtotalPrice != 0){
-        console.log('test warunku!');
-        thisCart.totalPrice = subtotalPrice + deliveryFee;
+      if(totalNumber !== 0){        
+        thisCart.totalPrice = subtotalPrice + thisCart.deliveryFee;
+      } else{
+        thisCart.deliveryFee = 0;
+        thisCart.totalPrice = 0;
       }
-      console.log('Dane zamówienia: ', thisCart.totalPrice, totalNumber, subtotalPrice);
-      thisCart.dom.deliveryFee.innerHTML = deliveryFee;
+
+      thisCart.dom.deliveryFee.innerHTML = thisCart.deliveryFee;
       thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
-      thisCart.dom.totalPrice.innerHTML = thisCart.totalPrice;
       thisCart.dom.totalNumber.innerHTML = totalNumber;
+      
+      for(let price of thisCart.dom.totalPrice){
+        price.innerHTML = thisCart.totalPrice; 
+      }
+    }
+
+    remove(cartProduct){
+      const thisCart = this;
+      const indexOfProduct = thisCart.products.indexOf(cartProduct);
+      thisCart.products.splice(indexOfProduct, 1);
+      cartProduct.dom.wrapper.remove();
+      thisCart.update();
+
+      
     }
 
   }
@@ -518,7 +539,7 @@
       });
 
       thisCartProduct.dom.wrapper.dispatchEvent(event);
-      console.log('działam test');
+      
     }
 
     initActions(){
