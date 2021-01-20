@@ -296,7 +296,7 @@
         // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
         const param = thisProduct.data.params[paramId];
         params[paramId] = {
-          name: param.label,
+          label: param.label,
           options: {}
         };
 
@@ -312,9 +312,8 @@
           // check if there is param with a name of paramId in formData and if it includes optionId
 
           if(checkedBoxCondition){                                        
-            params[paramId].options[optionId] = {
-              label: option.label
-            };               
+            params[paramId].options[optionId] = option.label;
+                          
           }
         }        
       }
