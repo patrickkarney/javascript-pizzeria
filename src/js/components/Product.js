@@ -1,6 +1,7 @@
 import {select, classNames, templates} from '../settings.js';
 import AmountWidget from './AmountWidget.js';
 import utils from '../utils.js';
+
 class Product{
   constructor(id, data){
     const thisProduct = this;
@@ -21,7 +22,7 @@ class Product{
       
     /*generate HTML based on template */
     const generateHTML = templates.menuProduct(thisProduct.data);
-    console.log('templateaa', generateHTML);
+    
     /*create element using utils.createElementFromHTML */
     thisProduct.element = utils.createDOMFromHTML(generateHTML);
     /*find menu container */
@@ -29,7 +30,7 @@ class Product{
     //console.log('menuContainer: ', menuContainer);
     /*add element to menu */
     menuContainer.appendChild(thisProduct.element);
-    console.log('thisProduct: ',thisProduct);
+    
   }
 
   getElements(){
