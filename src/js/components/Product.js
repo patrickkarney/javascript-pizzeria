@@ -27,7 +27,7 @@ class Product{
     thisProduct.element = utils.createDOMFromHTML(generateHTML);
     /*find menu container */
     const menuContainer = document.querySelector(select.containerOf.menu);
-    //console.log('menuContainer: ', menuContainer);
+    
     /*add element to menu */
     menuContainer.appendChild(thisProduct.element);
     
@@ -151,9 +151,7 @@ class Product{
       
     //multiply price by amount
     price *= thisProduct.amountWidget.value;
-    //create new property thisProduct.priceSingle in order to for cart to know what is the price of a single item with chosen checkboxes
-    thisProduct.priceSingle = price;
-      
+    
     // update calculated price in the HTML
     thisProduct.priceElem.innerHTML = price;
   }
@@ -175,7 +173,7 @@ class Product{
     const event = new CustomEvent('add-to-cart', {
       bubbles: true,
       detail: {
-        product: thisProduct
+        product: thisProduct.prepareCartProduct(),
       }
     });
     thisProduct.element.dispatchEvent(event);  
@@ -232,6 +230,8 @@ class Product{
         }
       }        
     }
+    
+    console.log('params,', params);
     return params;
   }
 }

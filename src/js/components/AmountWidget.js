@@ -30,10 +30,10 @@ class AmountWidget{
     //check if newValue is different than current value
     if(newValue !== thisWidget.value && !isNaN(newValue) && newValue<=settings.amountWidget.defaultMax && newValue>=settings.amountWidget.defaultMin){
       thisWidget.value = newValue;
-      thisWidget.announce();
+      
     }
     thisWidget.input.value = thisWidget.value;
-      
+    thisWidget.announce();
   }
 
   initActions(){
