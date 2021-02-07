@@ -186,7 +186,7 @@ class Booking{
     thisBooking.hourPicker = new HourPicker(thisBooking.dom.hourPicker);
     thisBooking.dom.hourPicker.addEventListener('click', function(){});
 
-    thisBooking.dom.wrapper.addEventListener('updated', function(){
+    thisBooking.dom.wrapper.addEventListener('update', function(){
       thisBooking.updateDom();
     });
   }
