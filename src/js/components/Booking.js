@@ -7,7 +7,8 @@ import HourPicker from './HourPicker.js';
 class Booking{
   constructor(element){
     const thisBooking = this;
-    
+
+    thisBooking.selectedTable = null;
     thisBooking.render(element);
     thisBooking.initWidgets();
     thisBooking.getData();
@@ -96,6 +97,7 @@ class Booking{
     console.log('thisBooking.booked: ', thisBooking.booked);
 
     thisBooking.updateDom();
+    
   }
 
   makeBooked(date, hour, duration, table){
@@ -158,6 +160,46 @@ class Booking{
 
   }
 
+  initTables(){
+    const thisBooking = this;
+
+    for(let table of thisBooking.dom.tables){
+      if(table.classList.contains(classNames.booking.tableSelected)){
+        table.classList.remove(classNames.booking.tableSelected);
+      }
+    }
+
+    thisBooking.selectedTable = null;
+  }
+
+  selectTable(element){
+    const thisBooking = this;
+    const tableId = element.getAttribute('data-table');
+    
+
+    
+    if(element.classList.contains(classNames.booking.tableBooked)){
+      alert('This table is already booked at this date.');
+    } else if(
+      element.classList.contains('table') 
+      && 
+      !element.classList.contains(classNames.booking.tableSelected))
+    {
+      thisBooking.initTables();
+      element.classList.toggle(classNames.booking.tableSelected);
+      thisBooking.selectedTable = tableId;
+      console.log('clickedElement', thisBooking.selectedTable);
+    } 
+    else if(
+      element.classList.contains('table') 
+      && 
+      element.classList.contains(classNames.booking.tableSelected))
+    {
+      element.classList.remove(classNames.booking.tableSelected);
+    }
+    
+  }
+
   render(element){
     const thisBooking = this;
     /*generating HTML for booking page */
@@ -170,6 +212,7 @@ class Booking{
     thisBooking.dom.hoursAmount = document.querySelector(select.booking.hoursAmount);
     thisBooking.dom.dataPicker = document.querySelector(select.widgets.datePicker.wrapper);
     thisBooking.dom.hourPicker = document.querySelector(select.widgets.hourPicker.wrapper);
+    thisBooking.dom.floor = document.querySelector(select.booking.floor);
     thisBooking.dom.tables = document.querySelectorAll(select.booking.tables);
   }
 
@@ -188,6 +231,11 @@ class Booking{
 
     thisBooking.dom.wrapper.addEventListener('update', function(){
       thisBooking.updateDom();
+    });
+
+    thisBooking.dom.floor.addEventListener('click', function(event){
+      const clickedElement = event.target;
+      thisBooking.selectTable(clickedElement);
     });
   }
 }
