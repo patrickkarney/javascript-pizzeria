@@ -33,6 +33,7 @@
     font-style: italic;
   }
 }
+
 .main-nav {
   position: absolute;
   @include flex(row, flex-start, flex-start);

@@ -122,17 +122,17 @@ class Product{
         if(checkedBoxCondition){                                        // box checked
           //check if option.default is true
           if(option.default){
-            console.log('Price do not change unless was not checked');
+            //console.log('Price do not change unless was not checked');
               
           } else if(!option.default){
             price = price + optionPrice;
-            console.log('Price added: ', price);
+            //console.log('Price added: ', price);
                
           }
             
         } else if(option.default){
           price = price - optionPrice;
-          console.log('Price subtracted: ', price);
+          //console.log('Price subtracted: ', price);
         }
           
         // if optionImage is not null
@@ -191,8 +191,8 @@ class Product{
     productSummary.price = productSummary.amount * productSummary.priceSingle;
       
       
-    console.log('productSummary: ', productSummary);
-    console.log('cart params: ',thisProduct.prepareCartProductParams());
+    //console.log('productSummary: ', productSummary);
+    //console.log('cart params: ',thisProduct.prepareCartProductParams());
     return productSummary;
   }
 
@@ -231,7 +231,7 @@ class Product{
       }        
     }
     
-    console.log('params,', params);
+    //console.log('params,', params);
     return params;
   }
 }
