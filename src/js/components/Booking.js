@@ -208,7 +208,7 @@ class Booking{
 
       date: thisBooking.datePicker.value,
       hour: thisBooking.hourPicker.value,
-      table: thisBooking.selectedTable,
+      table: parseInt(thisBooking.selectedTable),
       duration: thisBooking.hoursAmount.value,
       ppl: thisBooking.peopleAmount.value,
       starters: [],
@@ -229,7 +229,7 @@ class Booking{
     };
       
     fetch(url, options)
-      .then(thisBooking.makeBooked(reservation.date, reservation.hour, reservation.duration, reservation.table))
+      .then(thisBooking.makeBooked(reservation.date, reservation.hour, reservation.duration, parseInt(reservation.table)))
       .then(console.log(thisBooking.booked));
   }
 
@@ -275,6 +275,8 @@ class Booking{
     });
 
     thisBooking.dom.bookButton.addEventListener('click', function(event){
+      const clickedElement = event.target;
+      console.log(clickedElement);
       event.preventDefault();
       thisBooking.sendBooking();
     });
@@ -284,10 +286,16 @@ class Booking{
       const clickedElement = event.target;
       
       thisBooking.checked = clickedElement.tagName == 'INPUT' && clickedElement.type == 'checkbox' && clickedElement.name == 'starter';
-      if(thisBooking.checked){
+      const indexOfStarter = thisBooking.starters.indexOf(clickedElement.value);
+      if(thisBooking.checked && !thisBooking.starters.includes(clickedElement.value)){
         thisBooking.starters.push(clickedElement.value);
         console.log('starters', thisBooking.starters);
+      } else if(!thisBooking.checked && thisBooking.starters.includes(clickedElement.value)) {
+        thisBooking.starters.splice(indexOfStarter, 1);
+        console.log('starters', thisBooking.starters);
       }
+      
+
     });
 
     thisBooking.dom.wrapper.addEventListener('update', function(){
